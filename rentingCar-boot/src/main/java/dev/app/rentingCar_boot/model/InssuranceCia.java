@@ -1,31 +1,45 @@
 package dev.app.rentingCar_boot.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import dev.app.rentingCar_boot.utils.GenerateUUID;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
+@Table(name = "inssurance_cia")
 public class InssuranceCia {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private String name;
     private String description;
     private int qtyEmployee;
     private boolean isActive;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "inssuranceCia", cascade = CascadeType.ALL)
-    private List<Car> cars;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "inssurance_cia_delegations", joinColumns = @JoinColumn(name = "inssurance_cia_id"))
+    @Column(name = "delegation", length = 500)
+    private List<String> delegations = new ArrayList<>();
 
+    // Constructores
     public InssuranceCia() {
-        this.id = GenerateUUID.generateFourDigitUuid();
+        // No asignar id manualmente, dejar que @GeneratedValue lo haga
+    }
+
+    public InssuranceCia(String name) {
+        this.name = name;
+    }
+
+    // Getters & Setters
+    public List<String> getDelegations() {
+        return delegations;
+    }
+
+    public void setDelegations(List<String> delegations) {
+        this.delegations = delegations;
     }
 
     public String getId() {
@@ -67,23 +81,5 @@ public class InssuranceCia {
     public void setActive(boolean active) {
         isActive = active;
     }
-
-    public List<Car> getCars() {
-        return cars;
-    }
-
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
-    }
-
-    @Override
-    public String toString() {
-        return "InssuranceCia{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", qtyEmployee=" + qtyEmployee +
-                ", isActive=" + isActive +
-                '}';
-    }
 }
+
