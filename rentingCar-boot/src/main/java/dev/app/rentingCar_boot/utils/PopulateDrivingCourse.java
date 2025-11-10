@@ -5,6 +5,7 @@ import dev.app.rentingCar_boot.model.DrivingCourse;
 import dev.app.rentingCar_boot.repository.ClientRepository;
 import dev.app.rentingCar_boot.repository.DrivingCourseRepository;
 import dev.app.rentingCar_boot.utils.PopulateStatus;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,7 @@ public class PopulateDrivingCourse {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Transactional
     public PopulateStatus populateDrivingCourse(int qty) {
         StringBuilder messageBuilder = new StringBuilder();
         boolean[] operationResults = new boolean[2];

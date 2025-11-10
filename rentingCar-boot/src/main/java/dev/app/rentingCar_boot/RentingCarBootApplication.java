@@ -2,6 +2,7 @@ package dev.app.rentingCar_boot;
 
 import dev.app.rentingCar_boot.model.InssuranceCia;
 import dev.app.rentingCar_boot.repository.InssuranceCiaRepository;
+import dev.app.rentingCar_boot.utils.PopulateAllTables;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,15 +18,11 @@ public class RentingCarBootApplication {
 
     @Bean
     @Transactional
-    public CommandLineRunner demo(InssuranceCiaRepository repository) {
+    public CommandLineRunner demo(PopulateAllTables populateAllTables) {
         return args -> {
-            System.out.println("Iniciando CommandLineRunner");
-            InssuranceCia cia1 = new InssuranceCia("Mateos");
-            cia1.getDelegations().add("Barcelona Office\nCarrer de Balmes 123"); // Corrección de \n y formato
-            InssuranceCia savedCia1 = repository.save(cia1);
-            System.out.println("Datos de InssuranceCia insertados correctamente.");
-            System.out.println("Guardado: " + savedCia1.getName() + " con delegations. ID: " + savedCia1.getId());
-            System.out.println("Delegaciones guardadas: " + savedCia1.getDelegations());
+            System.out.println("Empezando a llenar TODAS las tablas...");
+            String resultado = populateAllTables.populateAllTables(5); //el 5 es de cada entida
+            System.out.println(resultado);
         };
     }
 }

@@ -2,6 +2,7 @@ package dev.app.rentingCar_boot.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class PopulateAllTables {
@@ -18,41 +19,47 @@ public class PopulateAllTables {
     @Autowired
     private PopulateDrivingCourse populateDrivingCourse;
 
+    @Transactional
     public String populateAllTables(int qty) {
-
-        // let s populate cars first
+        // Populate cars first
         PopulateStatus populateCarStatus = populateCar.populateCar(qty);
         System.out.println("\nPopulate Car operations: " + populateCarStatus.getQty() +
                 " \n" + populateCarStatus.getMessage());
 
-        // let s populate clients
+        // Populate clients
         PopulateStatus populateClientStatus = null;
         if (populateCarStatus.isStatus()) {
-        populateClientStatus = populateClient.populateClient(qty);
-        System.out.println("\nPopulate Client operations: " + populateClientStatus.getQty() +
-                " \n" + populateClientStatus.getMessage());
-        } else return "Populate Car operations failed";
+            populateClientStatus = populateClient.populateClient(qty);
+            System.out.println("\nPopulate Client operations: " + populateClientStatus.getQty() +
+                    " \n" + populateClientStatus.getMessage());
+        } else {
+            return "Populate Car operations failed";
+        }
 
-
-        // once cars are populated, let s populate bookings
+        // Populate bookings
         PopulateStatus populateBookingStatus = null;
         if (populateClientStatus.isStatus()) {
-        populateBookingStatus = populateBooking.populateBooking(qty);
-        System.out.println("\nPopulate Booking operations: " + populateBookingStatus.getQty() +
-                " \n" + populateBookingStatus.getMessage());
-        } else return "Populate Client operations failed";
+            populateBookingStatus = populateBooking.populateBooking(qty);
+            System.out.println("\nPopulate Booking operations: " + populateBookingStatus.getQty() +
+                    " \n" + populateBookingStatus.getMessage());
+        } else {
+            return "Populate Client operations failed";
+        }
 
-        // once bookings are populated, let s populate driving courses
+        // Populate driving courses
         PopulateStatus populateDrivingCourseStatus = null;
-        if (populateBookingStatus.isStatus()){
-        populateDrivingCourseStatus = populateDrivingCourse.populateDrivingCourse(qty);
-        System.out.println("\nPopulate DrivingCourse operations: " + populateDrivingCourseStatus.getQty() +
-                " \n" + populateDrivingCourseStatus.getMessage());
-        } else return "Populate Booking operations failed";
+        if (populateBookingStatus.isStatus()) {
+            populateDrivingCourseStatus = populateDrivingCourse.populateDrivingCourse(qty);
+            System.out.println("\nPopulate DrivingCourse operations: " + populateDrivingCourseStatus.getQty() +
+                    " \n" + populateDrivingCourseStatus.getMessage());
+        } else {
+            return "Populate Booking operations failed";
+        }
 
-        if (!populateDrivingCourseStatus.isStatus()) return "Populate DrivingCourse operations failed";
+        if (!populateDrivingCourseStatus.isStatus()) {
+            return "Populate DrivingCourse operations failed";
+        }
 
-    return "Populate All Tables operations completed successfully";
+        return "Populate All Tables operations completed successfully";
     }
-
 }

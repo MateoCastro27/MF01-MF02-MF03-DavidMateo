@@ -19,14 +19,13 @@ public class InssuranceCia {
     private int qtyEmployee;
     private boolean isActive;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "inssurance_cia_delegations", joinColumns = @JoinColumn(name = "inssurance_cia_id"))
     @Column(name = "delegation", length = 500)
     private List<String> delegations = new ArrayList<>();
 
     // Constructores
     public InssuranceCia() {
-        // No asignar id manualmente, dejar que @GeneratedValue lo haga
     }
 
     public InssuranceCia(String name) {
