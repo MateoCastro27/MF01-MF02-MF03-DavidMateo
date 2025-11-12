@@ -48,6 +48,9 @@ public class Car {
     @Column(name = "is_available")
     private Map<Integer, Boolean> availableDates = new HashMap<>();
 
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<InssuranceContract> contracts = new ArrayList<>();
 
     //private String availableDatesSummary;
 
@@ -158,7 +161,18 @@ public class Car {
         this.availableDates = availableDates;
     }
 
+    public List<InssuranceContract> getContracts() {
+        return contracts;
+    }
 
+    public void setContracts(List<InssuranceContract> contracts) {
+        this.contracts = contracts;
+    }
+
+    public void addContract(InssuranceContract contract) {
+        contracts.add(contract);
+        contract.setCar(this);
+    }
 
     @Override
     public String toString() {

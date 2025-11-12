@@ -1,5 +1,6 @@
 package dev.app.rentingCar_boot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -23,6 +24,10 @@ public class InssuranceCia {
     @CollectionTable(name = "inssurance_cia_delegations", joinColumns = @JoinColumn(name = "inssurance_cia_id"))
     @Column(name = "delegation", length = 500)
     private List<String> delegations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "inssuranceCia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // Evita recursión en JSON
+    private List<InssuranceContract> contracts = new ArrayList<>();
 
     // Constructores
     public InssuranceCia() {
@@ -79,6 +84,18 @@ public class InssuranceCia {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public List<InssuranceContract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(List<InssuranceContract> contracts) {
+        this.contracts = contracts;
+    }
+    public void addContract(InssuranceContract contract) {
+        contracts.add(contract);
+        contract.setInssuranceCia(this);
     }
 }
 
