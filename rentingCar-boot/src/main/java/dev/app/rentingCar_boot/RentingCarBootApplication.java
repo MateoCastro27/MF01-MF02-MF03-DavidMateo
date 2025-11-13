@@ -1,5 +1,7 @@
 package dev.app.rentingCar_boot;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import dev.app.rentingCar_boot.model.Car;
 import dev.app.rentingCar_boot.model.InssuranceCia;
 import dev.app.rentingCar_boot.model.InssuranceContract;
@@ -33,17 +35,28 @@ public class RentingCarBootApplication {
             System.out.println(resultado);
 
             // Población de InsuranceContract (PRA03)
-            List<InssuranceCia> cias = inssuranceCiaRepository.findAll();
-            List<Car> cars = carRepository.findAll();
+            Iterable<InssuranceCia> ciasIterable = inssuranceCiaRepository.findAll();
+            Iterable<Car> carsIterable = carRepository.findAll();
+            List<InssuranceCia> cias = new ArrayList<>();
+            List<Car> cars = new ArrayList<>();
+            ciasIterable.forEach(cias::add);
+            carsIterable.forEach(cars::add);
 
             if (!cias.isEmpty() && !cars.isEmpty()) {
-                InssuranceCia cia = cias.get(0); // primera compañía
-                Car car = cars.get(0); //  primer coche
+                InssuranceCia cia = cias.get(0); // Usa la primera compañia
+                Car car = cars.get(0); // Usa el primer coche
 
+                InssuranceContract contract1 = new InssuranceContract();
+                contract1.setCar(car);
+                contract1.setInssuranceCia(cia);
+                contract1.setStartDate(LocalDate.now());
+                contract1.setEndDate(LocalDate.now().plusMonths(6));
+                inssuranceContractRepository.save(contract1);
+                System.out.println("Guardado InsuranceContract 1: ID " + contract1.getContractId());
 
 
 
 
         };
     };
-}
+}}
