@@ -98,4 +98,3 @@ public class InssuranceCia {
         contract.setInssuranceCia(this);
     }
 }
-

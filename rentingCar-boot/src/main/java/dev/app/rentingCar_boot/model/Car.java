@@ -214,19 +214,19 @@ public class Car {
 
         StringBuilder result = new StringBuilder();
         result.append("\n");
-        
+
         // Create a list of all ranges with their start timestamps for chronological sorting
         List<RangeInfo> allRanges = new ArrayList<>();
         int rangeCounter = 1;
-        
+
         // Process dates and group consecutive ones by status
         Integer rangeStart = null;
         Integer rangeEnd = null;
         Boolean currentStatus = null;
-        
+
         for (int currentTimestamp : sortedDates) {
             boolean dateStatus = availableDates.get(currentTimestamp);
-            
+
             if (rangeStart == null) {
                 // First date
                 rangeStart = currentTimestamp;
@@ -240,21 +240,21 @@ public class Car {
                 String range = formatDateRange(rangeStart, rangeEnd);
                 String status = currentStatus ? "Available" : "Booked";
                 allRanges.add(new RangeInfo(rangeStart, "Range#" + rangeCounter++ + ": " + range + " " + status));
-                
+
                 // Start new range
                 rangeStart = currentTimestamp;
                 rangeEnd = currentTimestamp;
                 currentStatus = dateStatus;
             }
         }
-        
+
         // Add the last range
         if (rangeStart != null) {
             String range = formatDateRange(rangeStart, rangeEnd);
             String status = currentStatus ? "Available" : "Booked";
             allRanges.add(new RangeInfo(rangeStart, "Range#" + rangeCounter++ + ": " + range + " " + status));
         }
-        
+
         // Sort by start timestamp and append to result with line breaks
         allRanges.sort((a, b) -> Integer.compare(a.startTimestamp, b.startTimestamp));
         for (RangeInfo rangeInfo : allRanges) {
@@ -276,10 +276,10 @@ public class Car {
         LocalDate endDate = Instant.ofEpochSecond(endTimestamp).atZone(ZoneOffset.UTC).toLocalDate();
 
         // Format as dd/MM/yyyy
-        String startFormatted = String.format("%02d/%02d/%d", 
-            startDate.getDayOfMonth(), startDate.getMonthValue(), startDate.getYear());
-        String endFormatted = String.format("%02d/%02d/%d", 
-            endDate.getDayOfMonth(), endDate.getMonthValue(), endDate.getYear());
+        String startFormatted = String.format("%02d/%02d/%d",
+                startDate.getDayOfMonth(), startDate.getMonthValue(), startDate.getYear());
+        String endFormatted = String.format("%02d/%02d/%d",
+                endDate.getDayOfMonth(), endDate.getMonthValue(), endDate.getYear());
 
         if (startTimestamp == endTimestamp) {
             return startFormatted;
@@ -294,7 +294,7 @@ public class Car {
     private static class RangeInfo {
         final int startTimestamp;
         final String formattedRange;
-        
+
         RangeInfo(int startTimestamp, String formattedRange) {
             this.startTimestamp = startTimestamp;
             this.formattedRange = formattedRange;

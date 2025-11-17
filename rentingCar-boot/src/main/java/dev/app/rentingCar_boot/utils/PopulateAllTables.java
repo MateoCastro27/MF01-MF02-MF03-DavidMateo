@@ -1,5 +1,6 @@
 package dev.app.rentingCar_boot.utils;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,10 @@ public class PopulateAllTables {
 
     @Autowired
     private PopulateDrivingCourse populateDrivingCourse;
+
+    @Autowired
+    private PopulateInssuranceContract populateInssuranceContract;
+
 
     @Transactional
     public String populateAllTables(int qty) {
@@ -52,14 +57,20 @@ public class PopulateAllTables {
             populateDrivingCourseStatus = populateDrivingCourse.populateDrivingCourse(qty);
             System.out.println("\nPopulate DrivingCourse operations: " + populateDrivingCourseStatus.getQty() +
                     " \n" + populateDrivingCourseStatus.getMessage());
-        } else {
-            return "Populate Booking operations failed";
-        }
 
-        if (!populateDrivingCourseStatus.isStatus()) {
-            return "Populate DrivingCourse operations failed";
-        }
+            } else {
+                return "Populate Booking operations failed";
+            }
 
-        return "Populate All Tables operations completed successfully";
+            if (!populateDrivingCourseStatus.isStatus()) {
+                return "Populate DrivingCourse operations failed";
+            }
+
+            return "Populate All Tables operations completed successfully";
+
+
+
+
     }
+
 }
