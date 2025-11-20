@@ -29,9 +29,8 @@ public class PopulateInssuranceContract {
 
     public PopulateStatus populateInssuranceContract(int qty) {
         try {
-            //Código sugerido por la ia ya que me daba error a la hora de crear contratos me elimina los contratos
-            contractRepository.deleteAll();
-            contractRepository.flush();  //
+
+
 
             List<Car> cars = new ArrayList<>();
             carRepository.findAll().forEach(cars::add);

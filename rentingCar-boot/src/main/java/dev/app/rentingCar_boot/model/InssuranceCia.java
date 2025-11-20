@@ -20,7 +20,7 @@ public class InssuranceCia {
     private int qtyEmployee;
     private boolean isActive;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "inssurance_cia_delegations", joinColumns = @JoinColumn(name = "inssurance_cia_id"))
     @Column(name = "delegation", length = 500)
     private List<String> delegations = new ArrayList<>();
