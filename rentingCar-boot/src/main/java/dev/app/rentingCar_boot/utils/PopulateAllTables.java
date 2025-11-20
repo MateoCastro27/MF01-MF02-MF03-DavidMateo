@@ -61,12 +61,22 @@ public class PopulateAllTables {
             } else {
                 return "Populate Booking operations failed";
             }
+        // Populate Inssurance Contracts, he hecho lo mismo que los anteriores
+        PopulateStatus populateInssuranceStatus = populateInssuranceContract.populateInssuranceContract(qty);
+        System.out.println("\nPopulate InssuranceContract operations: " + populateInssuranceStatus.getQty() +
+                " \n" + populateInssuranceStatus.getMessage());
+
+        if (!populateInssuranceStatus.isStatus()) {
+            return "Populate InssuranceContract operations failed";
+        }
 
             if (!populateDrivingCourseStatus.isStatus()) {
                 return "Populate DrivingCourse operations failed";
             }
 
             return "Populate All Tables operations completed successfully";
+
+
 
 
 
